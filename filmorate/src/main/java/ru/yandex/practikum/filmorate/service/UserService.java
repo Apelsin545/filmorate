@@ -1,8 +1,17 @@
 package ru.yandex.practikum.filmorate.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practikum.filmorate.storage.InMemoryUserStorage;
 
 @Service
 public class UserService {
-        
+    InMemoryUserStorage users;
+
+    @Autowired
+    public UserService(InMemoryUserStorage users) {
+        this.users = users;
+    }
+
+
 }
