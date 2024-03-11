@@ -20,6 +20,7 @@ public class User {
     private final int id;
 
     public final Set<Integer> friends = new HashSet<>();
+    public final Set<Integer> likedFilms = new HashSet<>();
 
     @Email
     private String email;
