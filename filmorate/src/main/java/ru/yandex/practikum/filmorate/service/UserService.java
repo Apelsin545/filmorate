@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Service
 public class UserService {
-    public final InMemoryUserStorage users;
+    private final InMemoryUserStorage users;
 
     @Autowired
     public UserService(InMemoryUserStorage users) {
