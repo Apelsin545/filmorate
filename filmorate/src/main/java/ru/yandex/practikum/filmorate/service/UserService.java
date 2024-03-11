@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Service
 public class UserService {
-    InMemoryUserStorage users;
+    public final InMemoryUserStorage users;
 
     @Autowired
     public UserService(InMemoryUserStorage users) {
@@ -35,5 +35,8 @@ public class UserService {
         return user.getFriends();
     }
 
+    public List<User> getUsers() {
+        return users.getUsers().values().stream().toList();
+    }
 
 }
