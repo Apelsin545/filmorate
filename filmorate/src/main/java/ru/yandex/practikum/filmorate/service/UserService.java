@@ -39,4 +39,8 @@ public class UserService {
         return users.getUsers().values().stream().toList();
     }
 
+    public User createUser(User user) {
+        return users.add(user);
+    }
+
 }
