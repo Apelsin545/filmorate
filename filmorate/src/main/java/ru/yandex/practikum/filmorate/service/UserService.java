@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practikum.filmorate.model.User;
 import ru.yandex.practikum.filmorate.storage.InMemoryUserStorage;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class UserService {
     InMemoryUserStorage users;
@@ -26,6 +29,10 @@ public class UserService {
         user.getFriends().remove(anotherUser.getId());
 
         return true;
+    }
+
+    public Set<Integer> getFriends(User user) {
+        return user.getFriends();
     }
 
 
