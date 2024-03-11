@@ -19,8 +19,7 @@ import java.util.Set;
 public class User {
     private final int id;
 
-    public final Set<Integer> friends = new HashSet<>();
-    public final Set<Integer> likedFilms = new HashSet<>();
+    private final Set<Integer> friends = new HashSet<>();
 
     @Email
     private String email;

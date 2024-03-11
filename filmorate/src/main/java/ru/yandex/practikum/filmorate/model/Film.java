@@ -12,11 +12,15 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 public class Film {
     private final int id;
+
+    private final Set<Integer> usersLikedFilm = new HashSet<>();
 
     @NotNull
     private String name;
