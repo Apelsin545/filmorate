@@ -17,7 +17,14 @@ public class UserService {
     public boolean addFriend(User user, User anotherUser) {
         if (anotherUser == null) return false;
         user.getFriends().add(anotherUser.getId());
-        
+
+        return true;
+    }
+
+    public boolean removeFriend(User user, User anotherUser) {
+        if (anotherUser == null) return false;
+        user.getFriends().remove(anotherUser.getId());
+
         return true;
     }
 
