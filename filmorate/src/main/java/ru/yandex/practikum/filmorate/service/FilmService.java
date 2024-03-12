@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practikum.filmorate.model.Film;
 import ru.yandex.practikum.filmorate.storage.InMemoryFilmStorage;
 
+import java.util.List;
+
 @Service
 public class FilmService {
     private final InMemoryFilmStorage films;
@@ -26,6 +28,17 @@ public class FilmService {
                 .get(filmId)
                 .getUsersLikedFilm()
                 .remove(userId);
+    }
+
+    public List<Film> getPopularFilms(int count) {
+        if (count == 0) count = 10;
+
+        return films.getFilms()
+                .values()
+                .stream()
+                .toList()
+                .stream().sorted((film1, film2) -> (film1.getUsersLikedFilm().size() < film2.getUsersLikedFilm().size()) ? 1 : -1)
+                .toList();
     }
 
 
