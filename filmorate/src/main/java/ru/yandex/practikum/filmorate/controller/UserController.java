@@ -2,9 +2,14 @@ package ru.yandex.practikum.filmorate.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practikum.filmorate.model.User;
+import ru.yandex.practikum.filmorate.service.FilmService;
+import ru.yandex.practikum.filmorate.service.UserService;
+import ru.yandex.practikum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practikum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,23 +21,28 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class UserController {
-    Map<Integer, User> users = new HashMap<>();
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/users")
     public List<User> findAll() {
-        return new ArrayList<>(users.values());
+        return userService.getUsers();
     }
 
     @PostMapping("/user")
     public User create(@Valid @RequestBody User user) throws ValidationException {
         if (user.getEmail().contains("@") && !user.getLogin().isBlank() && user.getBirthday().isBefore(LocalDate.now())) {
-            if (users.get(user.getId()) == null) log.info("Добавлен новый пользователь: " + user);
+            if (!userService.getUsers().contains(user)) log.info("Добавлен новый пользователь: " + user);
             else log.info("Обновлен новый пользователь: " + user);
 
             if (user.getName().isBlank()) user.setName(user.getLogin());
-            users.put(user.getId(), user);
+            userService.createUser(user);
         } else {
-            if (users.get(user.getId()) == null) log.error("Ошибка добавления пользователя: " + user);
+            if (!userService.getUsers().contains(user)) log.error("Ошибка добавления пользователя: " + user);
             else log.error("Ошибка обновления пользователя: " + user);
 
             throw new ValidationException("неправильное тело запроса");
