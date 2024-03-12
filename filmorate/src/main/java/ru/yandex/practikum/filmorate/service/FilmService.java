@@ -21,5 +21,12 @@ public class FilmService {
                 .add(userId);
     }
 
+    public void deleteLike(int filmId, int userId) {
+        films.getFilms()
+                .get(filmId)
+                .getUsersLikedFilm()
+                .remove(userId);
+    }
+
 
 }
