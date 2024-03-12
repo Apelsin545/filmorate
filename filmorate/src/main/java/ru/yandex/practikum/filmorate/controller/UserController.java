@@ -56,6 +56,12 @@ public class UserController {
         return userService.addFriend(friendId, id);
     }
 
+    @DeleteMapping("users/{id}/friends/{friendId}")
+    public boolean removeFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.removeFriend(id, friendId);
+        return userService.removeFriend(friendId, id);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> illegalBodyUser(final ValidationException e) {
