@@ -14,8 +14,11 @@ public class FilmService {
         this.films = films;
     }
 
-    public void addLike(Film film, int id) {
-
+    public void addLike(int filmId, int userId) {
+        films.getFilms()
+                .get(filmId)
+                .getUsersLikedFilm()
+                .add(userId);
     }
 
 
