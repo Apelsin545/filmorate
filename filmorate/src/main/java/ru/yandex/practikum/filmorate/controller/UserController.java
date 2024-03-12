@@ -13,10 +13,7 @@ import ru.yandex.practikum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -60,6 +57,11 @@ public class UserController {
     public boolean removeFriend(@PathVariable int id, @PathVariable int friendId) {
         userService.removeFriend(id, friendId);
         return userService.removeFriend(friendId, id);
+    }
+
+    @GetMapping("users/{id}/friends")
+    public Set<Integer> getFriends(@PathVariable int id) {
+        return userService.getFriends(id);
     }
 
     @ExceptionHandler

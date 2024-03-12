@@ -38,8 +38,8 @@ public class UserService {
                 .collect(Collectors.toSet());
     }
 
-    public Set<Integer> getFriends(User user) {
-        return user.getFriends();
+    public Set<Integer> getFriends(int userId) {
+        return users.getUsers().get(userId).getFriends();
     }
 
     public List<User> getUsers() {
