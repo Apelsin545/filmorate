@@ -50,6 +50,12 @@ public class UserController {
         return user;
     }
 
+    @PutMapping("users/{id}/friends/{friendId}")
+    public boolean addFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.addFriend(id, friendId);
+        return userService.addFriend(friendId, id);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> illegalBodyUser(final ValidationException e) {
