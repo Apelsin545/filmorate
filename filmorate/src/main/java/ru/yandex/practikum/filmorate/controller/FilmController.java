@@ -28,6 +28,11 @@ public class FilmController {
         return filmService.findAll();
     }
 
+    @GetMapping("/films/popular")
+    public List<Film> getPopular(@RequestParam int count) {
+        return filmService.getPopularFilms(count);
+    }
+
     @PostMapping("/film")
     public Film create(@Valid @RequestBody Film film) throws ValidationException {
         if (!Objects.equals(film.getName(), "") && film.getDescription().length() <= 200
