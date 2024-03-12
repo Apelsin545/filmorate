@@ -17,8 +17,8 @@ public class UserService {
         this.users = users;
     }
 
-    public boolean addFriend(User user, User anotherUser) {
-        return user.getFriends().add(anotherUser.getId());
+    public boolean addFriend(int userId, int anotherUserId) {
+        return users.getUsers().get(userId).getFriends().add(anotherUserId);
     }
 
     public boolean removeFriend(User user, User anotherUser) {
@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public List<User> getUsers() {
-        return users.getUsers().values().stream().toList();
+        return users.getUsers();
     }
 
     public User createUser(User user) {
