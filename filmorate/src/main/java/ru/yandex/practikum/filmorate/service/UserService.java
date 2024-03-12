@@ -21,8 +21,8 @@ public class UserService {
         return users.getUsers().get(userId).getFriends().add(anotherUserId);
     }
 
-    public boolean removeFriend(User user, User anotherUser) {
-        return user.getFriends().remove(anotherUser.getId());
+    public boolean removeFriend(int userId, int anotherUserId) {
+        return users.getUsers().get(userId).getFriends().remove(anotherUserId);
     }
 
     public Set<Integer> getFriends(User user) {
