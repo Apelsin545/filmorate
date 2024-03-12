@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practikum.filmorate.model.User;
 import ru.yandex.practikum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practikum.filmorate.storage.UserStorage;
 
 import java.util.List;
 import java.util.Set;
@@ -11,10 +12,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private final InMemoryUserStorage users;
+    private final UserStorage users;
 
     @Autowired
-    public UserService(InMemoryUserStorage users) {
+    public UserService(UserStorage users) {
         this.users = users;
     }
 
@@ -42,7 +43,7 @@ public class UserService {
     }
 
     public List<User> getUsers() {
-        return users.getUsersList();
+        return users.getUsers().values().stream().toList();
     }
 
     public User createUser(User user) {

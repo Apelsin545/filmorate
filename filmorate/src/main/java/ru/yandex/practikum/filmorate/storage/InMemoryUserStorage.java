@@ -27,8 +27,4 @@ public class InMemoryUserStorage implements UserStorage {
     public User update(User user) {
         return users.put(user.getId(), user);
     }
-
-    public List<User> getUsersList() {
-        return users.values().stream().toList();
-    }
 }

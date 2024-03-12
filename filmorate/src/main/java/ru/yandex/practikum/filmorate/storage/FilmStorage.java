@@ -1,10 +1,15 @@
 package ru.yandex.practikum.filmorate.storage;
 
 import ru.yandex.practikum.filmorate.model.Film;
-import ru.yandex.practikum.filmorate.model.User;
+
+import java.util.Map;
 
 public interface FilmStorage {
+    final static int a = 1;
+
     Film add(Film film);
     Film remove(Film film);
     Film update(Film film);
+
+    Map<Integer, Film> getFilms();
 }
