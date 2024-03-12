@@ -2,10 +2,12 @@ package ru.yandex.practikum.filmorate.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practikum.filmorate.model.Film;
+import ru.yandex.practikum.filmorate.service.FilmService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,11 +16,16 @@ import java.util.*;
 @Slf4j
 @RestController
 public class FilmController {
-    Map<Integer, Film> films = new HashMap<>();
+    private final FilmService filmService;
+
+    @Autowired
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @GetMapping("/films")
     public List<Film> findAll() {
-        return new ArrayList<>(films.values());
+        return filmService.findAll();
     }
 
     @PostMapping("/film")
@@ -26,12 +33,12 @@ public class FilmController {
         if (!Objects.equals(film.getName(), "") && film.getDescription().length() <= 200
                 && film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28))
                 && !film.getDuration().isNegative()) {
-            if (films.get(film.getId()) == null) log.info("Добавлен новый фильм: " + film);
+            if (!filmService.findAll().contains(film)) log.info("Добавлен новый фильм: " + film);
             else log.info("Изменен существующий фильм: " + film);
 
-            films.put(film.getId(), film);
+            filmService.createFilm(film);
         } else {
-            if (films.get(film.getId()) == null) log.info("Ошибка добавления фильма: " + film);
+            if (!filmService.findAll().contains(film)) log.info("Ошибка добавления фильма: " + film);
             else log.info("Ошибка обновления фильма: " + film);
 
             throw new ValidationException("неправильное тело запроса");
