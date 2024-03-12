@@ -38,7 +38,15 @@ public class FilmService {
                 .values()
                 .stream()
                 .toList()
-                .stream().sorted((film1, film2) -> (film1.getUsersLikedFilm().size() < film2.getUsersLikedFilm().size()) ? 1 : -1)
+                .stream().sorted((film1, film2) -> (film1.getUsersLikedFilm().size() > film2.getUsersLikedFilm().size()) ? 1 : -1)
+                .limit(count)
+                .toList();
+    }
+
+    public List<Film> findAll() {
+        return films.getFilms()
+                .values()
+                .stream()
                 .toList();
     }
 
