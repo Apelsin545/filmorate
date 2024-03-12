@@ -64,6 +64,11 @@ public class UserController {
         return userService.getFriends(id);
     }
 
+    @GetMapping("users/{id}/friends/common/{otherId}")
+    public Set<Integer> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.getCommonFriends(id, otherId);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> illegalBodyUser(final ValidationException e) {
