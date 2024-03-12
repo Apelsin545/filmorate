@@ -50,5 +50,12 @@ public class FilmService {
                 .toList();
     }
 
+    public Film createFilm(Film film) {
+        return films.add(film);
+    }
+
+    public Film removeFilm(Film film) {
+        return films.remove(film);
+    }
 
 }
