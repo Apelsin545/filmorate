@@ -7,6 +7,7 @@ import ru.yandex.practikum.filmorate.storage.InMemoryUserStorage;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -25,12 +26,23 @@ public class UserService {
         return users.getUsers().get(userId).getFriends().remove(anotherUserId);
     }
 
+    public Set<Integer> getCommonFriends(int userId, int anotherUserId) {
+        return users.getUsers()
+                .get(userId)
+                .getFriends()
+                .stream()
+                .filter(id -> users.getUsers()
+                        .get(anotherUserId)
+                        .getFriends().contains(id))
+                .collect(Collectors.toSet());
+    }
+
     public Set<Integer> getFriends(User user) {
         return user.getFriends();
     }
 
     public List<User> getUsers() {
-        return users.getUsers();
+        return users.getUsersList();
     }
 
     public User createUser(User user) {
