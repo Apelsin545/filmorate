@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practikum.filmorate.model.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -25,5 +26,9 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User update(User user) {
         return users.put(user.getId(), user);
+    }
+
+    public List<User> getUsers() {
+        return users.values().stream().toList();
     }
 }
