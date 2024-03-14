@@ -1,17 +1,11 @@
 package ru.yandex.practikum.filmorate.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import org.springframework.boot.convert.DurationFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +19,8 @@ public class Film {
     @NotNull
     private String name;
     private String description;
+    private String genre;
+    private String MPA;
 
     private LocalDate releaseDate;
     private Duration duration;
