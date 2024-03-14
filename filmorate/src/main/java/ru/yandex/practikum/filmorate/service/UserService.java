@@ -20,8 +20,7 @@ public class UserService {
     }
 
     public boolean addFriend(int userId, int anotherUserId) {
-        if (users.getUsers().get(userId).getFriends().get(anotherUserId) == null) {
-            users.getUsers().get(userId).getFriends().put(anotherUserId, "Not confirmed");
+        if (users.getUsers().get(userId).getFriends().get(anotherUserId) == null && users.getUsers().get(anotherUserId).getFriends().get(userId) == null) {
             users.getUsers().get(anotherUserId).getFriends().put(userId, "Not confirmed");
 
             return true;
@@ -36,7 +35,11 @@ public class UserService {
     }
 
     public boolean removeFriend(int userId, int anotherUserId) {
-        if (users.getUsers().get(userId).getFriends().get(anotherUserId) != null) {
+        if (Objects.equals(users.getUsers().get(userId).getFriends().get(anotherUserId), "Not confirmed")) {
+            users.getUsers().get(anotherUserId).getFriends().remove(userId);
+
+            return true;
+        } else if (Objects.equals(users.getUsers().get(userId).getFriends().get(anotherUserId), "Confirmed")) {
             users.getUsers().get(userId).getFriends().remove(anotherUserId);
             users.getUsers().get(anotherUserId).getFriends().remove(userId);
 
@@ -56,7 +59,7 @@ public class UserService {
                         .get(anotherUserId)
                         .getFriends().containsKey(id) && Objects.equals(users.getUsers()
                         .get(anotherUserId)
-                        .getFriends().get(id), "Confirmer"))
+                        .getFriends().get(id), "Confirmed"))
                 .collect(Collectors.toSet());
     }
 
