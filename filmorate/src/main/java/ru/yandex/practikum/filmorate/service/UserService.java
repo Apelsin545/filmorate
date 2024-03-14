@@ -3,10 +3,10 @@ package ru.yandex.practikum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practikum.filmorate.model.User;
-import ru.yandex.practikum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practikum.filmorate.storage.UserStorage;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,26 +20,48 @@ public class UserService {
     }
 
     public boolean addFriend(int userId, int anotherUserId) {
-        return users.getUsers().get(userId).getFriends().add(anotherUserId);
+        if (users.getUsers().get(userId).getFriends().get(anotherUserId) == null) {
+            users.getUsers().get(userId).getFriends().put(anotherUserId, "Not confirmed");
+            users.getUsers().get(anotherUserId).getFriends().put(userId, "Not confirmed");
+
+            return true;
+        } else if (Objects.equals(users.getUsers().get(userId).getFriends().get(anotherUserId), "Not confirmed")) {
+            users.getUsers().get(userId).getFriends().put(anotherUserId, "Confirmed");
+            users.getUsers().get(anotherUserId).getFriends().put(userId, "Confirmed");
+
+            return true;
+        }
+
+        return false;
     }
 
     public boolean removeFriend(int userId, int anotherUserId) {
-        return users.getUsers().get(userId).getFriends().remove(anotherUserId);
+        if (users.getUsers().get(userId).getFriends().get(anotherUserId) != null) {
+            users.getUsers().get(userId).getFriends().remove(anotherUserId);
+            users.getUsers().get(anotherUserId).getFriends().remove(userId);
+
+            return true;
+        }
+
+        return false;
     }
 
     public Set<Integer> getCommonFriends(int userId, int anotherUserId) {
         return users.getUsers()
                 .get(userId)
                 .getFriends()
+                .keySet()
                 .stream()
                 .filter(id -> users.getUsers()
                         .get(anotherUserId)
-                        .getFriends().contains(id))
+                        .getFriends().containsKey(id) && Objects.equals(users.getUsers()
+                        .get(anotherUserId)
+                        .getFriends().get(id), "Confirmer"))
                 .collect(Collectors.toSet());
     }
 
     public Set<Integer> getFriends(int userId) {
-        return users.getUsers().get(userId).getFriends();
+        return users.getUsers().get(userId).getFriends().keySet();
     }
 
     public List<User> getUsers() {
