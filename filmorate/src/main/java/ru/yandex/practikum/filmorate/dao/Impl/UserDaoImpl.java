@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practikum.filmorate.dao.UserDao;
 import ru.yandex.practikum.filmorate.model.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -35,13 +37,21 @@ public class UserDaoImpl implements UserDao {
         } else {
             return null;
         }
-
-
     }
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        String sql = "select * from filmorate_user";
+
+        return jdbcTemplate.query(sql, (rs, max) -> makeUser(rs));
+    }
+
+    public User makeUser(ResultSet rs) throws SQLException {
+        return new User(Integer.parseInt(rs.getString("id")),
+                rs.getString("email"),
+                rs.getString("login"),
+                rs.getString("name"),
+                LocalDate.parse(Objects.requireNonNull(rs.getString("birthday")), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 
     @Override
