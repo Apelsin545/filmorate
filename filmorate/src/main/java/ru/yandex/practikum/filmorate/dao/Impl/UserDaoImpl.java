@@ -56,11 +56,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void createUser(User user) {
-
+        jdbcTemplate.update("insert into filmorate_user (email, login, name, birthday) values (?, ?, ? ,?)",
+                user.getEmail(),
+                user.getLogin(),
+                user.getName(),
+                user.getBirthday());
     }
 
     @Override
     public void removeUser(int id) {
-
+        jdbcTemplate.update("delete from filmorate_user where id = ?", id);
     }
 }
