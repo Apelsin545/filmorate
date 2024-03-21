@@ -20,12 +20,12 @@ public class FilmLikeDaoImpl implements FilmLikeDao {
 
     @Override
     public void addLikeToFilm(int userId, int filmId) {
-
+        jdbcTemplate.update("insert into filmorate_friend (user_id, film_id) values (?, ?)", userId, filmId);
     }
 
     @Override
     public void deleteLikeFromFilm(int userId, int filmId) {
-
+        jdbcTemplate.update("delete from filmorate_friend where user_id = ? and film_id = ?", userId, filmId);
     }
 
     @Override
