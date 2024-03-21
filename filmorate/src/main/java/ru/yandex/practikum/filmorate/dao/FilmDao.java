@@ -7,8 +7,6 @@ import java.util.List;
 public interface FilmDao {
     Film getFilmById(int id);
 
-    List<Film> getPopularFilms(int max);
-
     List<Film> getAllFilms();
 
     void createFilm(Film film);

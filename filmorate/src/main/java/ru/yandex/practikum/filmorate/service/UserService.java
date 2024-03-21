@@ -3,7 +3,6 @@ package ru.yandex.practikum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practikum.filmorate.model.User;
-import ru.yandex.practikum.filmorate.storage.UserStorage;
 
 import java.util.List;
 import java.util.Objects;

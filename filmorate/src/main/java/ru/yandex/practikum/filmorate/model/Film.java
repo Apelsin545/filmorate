@@ -6,15 +6,11 @@ import lombok.Data;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 public class Film {
     private final int id;
-
-    private final Set<User> usersLikedFilm = new HashSet<>();
 
     @NotNull
     private String name;
