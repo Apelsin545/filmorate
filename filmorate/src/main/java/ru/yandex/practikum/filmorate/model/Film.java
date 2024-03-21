@@ -14,7 +14,7 @@ import java.util.Set;
 public class Film {
     private final int id;
 
-    private final Set<Integer> usersLikedFilm = new HashSet<>();
+    private final Set<User> usersLikedFilm = new HashSet<>();
 
     @NotNull
     private String name;

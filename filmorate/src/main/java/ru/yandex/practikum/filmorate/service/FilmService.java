@@ -10,17 +10,19 @@ import java.util.List;
 @Service
 public class FilmService {
     private final FilmStorage films;
+    private final UserService userService;
 
     @Autowired
-    public FilmService(FilmStorage films) {
+    public FilmService(FilmStorage films, UserService userService) {
         this.films = films;
+        this.userService = userService;
     }
 
     public void addLike(int filmId, int userId) {
         films.getFilms()
                 .get(filmId)
                 .getUsersLikedFilm()
-                .add(userId);
+                .add(userService.getUserById(userId));
     }
 
     public void deleteLike(int filmId, int userId) {

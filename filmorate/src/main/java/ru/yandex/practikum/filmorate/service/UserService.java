@@ -19,6 +19,10 @@ public class UserService {
         this.users = users;
     }
 
+    public User getUserById(int id) {
+        return users.getUsers().get(id);
+    }
+
     public boolean addFriend(int userId, int anotherUserId) {
         if (users.getUsers().get(userId).getFriends().get(anotherUserId) == null && users.getUsers().get(anotherUserId).getFriends().get(userId) == null) {
             users.getUsers().get(anotherUserId).getFriends().put(userId, "Not confirmed");
