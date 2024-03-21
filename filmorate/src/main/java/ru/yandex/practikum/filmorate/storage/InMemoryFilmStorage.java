@@ -1,6 +1,5 @@
 package ru.yandex.practikum.filmorate.storage;
 
-import lombok.Data;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 import ru.yandex.practikum.filmorate.model.Film;

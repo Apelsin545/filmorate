@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practikum.filmorate.model.Film;
 import ru.yandex.practikum.filmorate.storage.FilmStorage;
-import ru.yandex.practikum.filmorate.storage.InMemoryFilmStorage;
 
 import java.util.List;
 

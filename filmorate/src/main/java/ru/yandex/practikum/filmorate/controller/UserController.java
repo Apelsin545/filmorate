@@ -6,14 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practikum.filmorate.model.User;
-import ru.yandex.practikum.filmorate.service.FilmService;
 import ru.yandex.practikum.filmorate.service.UserService;
-import ru.yandex.practikum.filmorate.storage.InMemoryUserStorage;
-import ru.yandex.practikum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @RestController

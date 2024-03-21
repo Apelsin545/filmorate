@@ -1,6 +1,6 @@
 package ru.yandex.practikum.filmorate.storage;
 
-import ru.yandex.practikum.filmorate.model.*;
+import ru.yandex.practikum.filmorate.model.User;
 
 import java.util.Map;
 
