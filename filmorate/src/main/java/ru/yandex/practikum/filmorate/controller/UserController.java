@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping(value = "/users", params = {"id"})
     public User getUserById(@RequestParam int id) {
         return userService.getUserById(id);
     }

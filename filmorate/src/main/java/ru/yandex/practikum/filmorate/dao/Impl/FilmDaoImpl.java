@@ -8,6 +8,8 @@ import ru.yandex.practikum.filmorate.dao.FilmDao;
 import ru.yandex.practikum.filmorate.model.Film;
 import ru.yandex.practikum.filmorate.model.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,7 +49,22 @@ public class FilmDaoImpl implements FilmDao {
 
     @Override
     public List<Film> getAllFilms() {
-        return null;
+        String sql = "select * from filmorate_film";
+
+        return jdbcTemplate.query(sql, (rs, max) -> makeFilm(rs));
+    }
+
+    public Film makeFilm(ResultSet rs) throws SQLException {
+        return new Film(Integer.parseInt(rs.getString("id")),
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getString("genre"),
+                rs.getString("mpa"),
+                LocalDate.parse(Objects.requireNonNull(rs.getString("release_date")), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                Duration.between(
+                        LocalTime.MIN,
+                        LocalTime.parse(Objects.requireNonNull(rs.getString("duration")))
+                ));
     }
 
     @Override

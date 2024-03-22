@@ -23,7 +23,7 @@ public class FilmController {
         this.filmService = filmService;
     }
 
-    @GetMapping("/films")
+    @GetMapping(value = "/films", params = {"id"})
     public Film getFilmById(@RequestParam int id) {
         return filmService.getFilmById(id);
     }
