@@ -37,13 +37,27 @@ public class FriendDaoImpl implements FriendDao {
                 friends.add(userDao.getUserById(Integer.parseInt(Objects.requireNonNull(rows.getString("user_to_id")))));
             }
         }
-        
+
         return friends;
     }
 
     @Override
     public void sendRequest(int userFrom, int userTo) {
+        String sql = "select * from filmorate_friend where (user_from_id = ? and user_to_id = ?) or (user_from_id = ? and user_to_id = ?)";
 
+        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, userFrom, userTo, userTo, userFrom);
+
+        if (rows.next()) {
+            int userFromTable = Integer.parseInt(Objects.requireNonNull(rows.getString("user_from_id")));
+            int userToTable = Integer.parseInt(Objects.requireNonNull(rows.getString("user_to_id")));
+            boolean isAccepted = Boolean.parseBoolean(Objects.requireNonNull(rows.getString("is_accepted")));
+
+            if (userFrom == userToTable && userTo == userFromTable && !isAccepted) {
+                jdbcTemplate.update("update filmorate_friend set is_accepted = true where user_from_id = ? and user_to_id = ?", userTo, userFrom);
+            }
+        } else {
+            jdbcTemplate.update("insert into filmorate_friend (user_from_id, user_to_id, is_accepted) values (?, ?, false)", userFrom, userTo);
+        }
     }
 
     @Override
@@ -53,11 +67,6 @@ public class FriendDaoImpl implements FriendDao {
 
     @Override
     public void removeFriend(int userFrom, int userToRemove) {
-
-    }
-
-    @Override
-    public void acceptRequest(int userFrom, int userTo) {
 
     }
 }

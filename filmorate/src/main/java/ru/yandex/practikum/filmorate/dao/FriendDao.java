@@ -11,6 +11,4 @@ public interface FriendDao {
     void rejectRequest(int userFrom, int userTo);
 
     void removeFriend(int userFrom, int userToRemove);
-
-    void acceptRequest(int userFrom, int userTo);
 }
