@@ -69,11 +69,17 @@ public class FilmDaoImpl implements FilmDao {
 
     @Override
     public void createFilm(Film film) {
-
+        jdbcTemplate.update("insert into filmorate_film (name, description, genre, mpa, release_date, duration) values (?, ? ,? ,? ,? ,?)",
+                film.getName(),
+                film.getDescription(),
+                film.getGenre(),
+                film.getMPA(),
+                film.getReleaseDate(),
+                film.getDuration());
     }
 
     @Override
     public void removeFilm(int id) {
-
+        jdbcTemplate.update("delete from filmorate_film where id = ?", id);
     }
 }
