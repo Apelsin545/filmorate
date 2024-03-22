@@ -62,11 +62,18 @@ public class FriendDaoImpl implements FriendDao {
 
     @Override
     public void rejectRequest(int userFrom, int userTo) {
+        String sql = "select * from filmorate_friend where (user_from_id = ? and user_to_id = ?) or (user_from_id = ? and user_to_id = ?)";
 
-    }
+        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, userFrom, userTo, userTo, userFrom);
 
-    @Override
-    public void removeFriend(int userFrom, int userToRemove) {
+        if (rows.next()) {
+            int userFromTable = Integer.parseInt(Objects.requireNonNull(rows.getString("user_from_id")));
+            int userToTable = Integer.parseInt(Objects.requireNonNull(rows.getString("user_to_id")));
+            boolean isAccepted = Boolean.parseBoolean(Objects.requireNonNull(rows.getString("is_accepted")));
 
+            if (userFrom == userToTable && userTo == userFromTable || userFrom == userFromTable && userTo == userToTable) {
+                jdbcTemplate.update("delete from filmorate_friend where user_from_id = ? and user_to_id = ?", userTo, userFrom);
+            }
+        }
     }
 }
