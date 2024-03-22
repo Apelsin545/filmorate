@@ -2,60 +2,48 @@ package ru.yandex.practikum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practikum.filmorate.dao.FilmDao;
+import ru.yandex.practikum.filmorate.dao.FilmLikeDao;
 import ru.yandex.practikum.filmorate.model.Film;
 
 import java.util.List;
 
 @Service
 public class FilmService {
-    private final FilmStorage films;
-    private final UserService userService;
+    private final FilmDao filmDao;
+    private final FilmLikeDao filmLikeDao;
 
     @Autowired
-    public FilmService(FilmStorage films, UserService userService) {
-        this.films = films;
-        this.userService = userService;
+    public FilmService(FilmDao filmDao, FilmLikeDao filmLikeDao) {
+        this.filmDao = filmDao;
+        this.filmLikeDao = filmLikeDao;
     }
 
-    public void addLike(int filmId, int userId) {
-        films.getFilms()
-                .get(filmId)
-                .getUsersLikedFilm()
-                .add(userService.getUserById(userId));
+    public Film getFilmById(int id) {
+        return filmDao.getFilmById(id);
     }
 
-    public void deleteLike(int filmId, int userId) {
-        films.getFilms()
-                .get(filmId)
-                .getUsersLikedFilm()
-                .remove(userId);
+    public List<Film> getAllFilms() {
+        return filmDao.getAllFilms();
     }
 
-    public List<Film> getPopularFilms(int count) {
-        if (count == 0) count = 10;
-
-        return films.getFilms()
-                .values()
-                .stream()
-                .toList()
-                .stream().sorted((film1, film2) -> (film1.getUsersLikedFilm().size() < film2.getUsersLikedFilm().size()) ? 1 : -1)
-                .limit(count)
-                .toList();
+    public void createFilm(Film film) {
+        filmDao.createFilm(film);
     }
 
-    public List<Film> findAll() {
-        return films.getFilms()
-                .values()
-                .stream()
-                .toList();
+    public void removeFilm(int filmId) {
+        filmDao.removeFilm(filmId);
     }
 
-    public Film createFilm(Film film) {
-        return films.add(film);
+    public void addLikeToFilm(int filmId, int userId) {
+        filmLikeDao.addLikeToFilm(userId, filmId);
     }
 
-    public Film removeFilm(Film film) {
-        return films.remove(film);
+    public void deleteLikeFromFilm(int filmId, int userId) {
+        filmLikeDao.deleteLikeFromFilm(userId, filmId);
     }
 
+    public List<Film> getPopularFilms(int max) {
+        return filmLikeDao.getPopularFilms(max);
+    }
 }
