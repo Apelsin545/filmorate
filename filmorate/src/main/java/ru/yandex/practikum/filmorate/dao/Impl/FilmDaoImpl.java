@@ -10,6 +10,7 @@ import ru.yandex.practikum.filmorate.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -38,10 +39,8 @@ public class FilmDaoImpl implements FilmDao {
                     user.getString("genre"),
                     user.getString("mpa"),
                     LocalDate.parse(Objects.requireNonNull(user.getString("release_date")), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                    Duration.between(
-                            LocalTime.MIN,
-                            LocalTime.parse(Objects.requireNonNull(user.getString("duration")))
-                    ));
+                    Time.valueOf(LocalTime.parse(Objects.requireNonNull(user.getString("duration"))))
+                    );
         } else {
             return null;
         }
@@ -61,10 +60,7 @@ public class FilmDaoImpl implements FilmDao {
                 rs.getString("genre"),
                 rs.getString("mpa"),
                 LocalDate.parse(Objects.requireNonNull(rs.getString("release_date")), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                Duration.between(
-                        LocalTime.MIN,
-                        LocalTime.parse(Objects.requireNonNull(rs.getString("duration")))
-                ));
+                Time.valueOf(LocalTime.parse(Objects.requireNonNull(rs.getString("duration")))));
     }
 
     @Override

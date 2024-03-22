@@ -40,9 +40,7 @@ public class FilmController {
 
     @PostMapping("/film")
     public void create(@Valid @RequestBody Film film) throws ValidationException {
-        if (!Objects.equals(film.getName(), "") && film.getDescription().length() <= 200
-                && film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28))
-                && !film.getDuration().isNegative()) {
+        if (!Objects.equals(film.getName(), "") && film.getDescription().length() <= 200 && film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28))) {
             log.info("Добавлен новый фильм: " + film);
 
             filmService.createFilm(film);
