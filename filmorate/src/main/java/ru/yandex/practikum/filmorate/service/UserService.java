@@ -43,6 +43,10 @@ public class UserService {
         return friendDao.getFriends(userId);
     }
 
+    public List<User> getCommonFriends(int userId, int otherId) {
+        return friendDao.getCommonFriends(userId, otherId);
+    }
+
     public void addFriend(int userFromId, int userToId) {
         friendDao.sendRequest(userFromId, userToId);
     }

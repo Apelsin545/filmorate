@@ -9,4 +9,6 @@ public interface FriendDao {
 
     void sendRequest(int userFrom, int userTo);
     void rejectRequest(int userFrom, int userTo);
+
+    List<User> getCommonFriends(int userId, int otherId);
 }

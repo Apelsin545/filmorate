@@ -70,8 +70,8 @@ public class UserController {
     }
 
     @GetMapping("users/{id}/friends/common/{otherId}")
-    public Set<Integer> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
-        return new HashSet<>();
+    public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.getCommonFriends(id, otherId);
     }
 
     @ExceptionHandler

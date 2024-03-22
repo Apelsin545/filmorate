@@ -8,9 +8,7 @@ import ru.yandex.practikum.filmorate.dao.FriendDao;
 import ru.yandex.practikum.filmorate.dao.UserDao;
 import ru.yandex.practikum.filmorate.model.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class FriendDaoImpl implements FriendDao {
@@ -69,11 +67,34 @@ public class FriendDaoImpl implements FriendDao {
         if (rows.next()) {
             int userFromTable = Integer.parseInt(Objects.requireNonNull(rows.getString("user_from_id")));
             int userToTable = Integer.parseInt(Objects.requireNonNull(rows.getString("user_to_id")));
-            boolean isAccepted = Boolean.parseBoolean(Objects.requireNonNull(rows.getString("is_accepted")));
 
             if (userFrom == userToTable && userTo == userFromTable || userFrom == userFromTable && userTo == userToTable) {
                 jdbcTemplate.update("delete from filmorate_friend where user_from_id = ? and user_to_id = ?", userTo, userFrom);
             }
         }
     }
+
+    @Override
+    public List<User> getCommonFriends(int userId, int otherId) {
+        String sql = "select user_from_id, user_to_id from filmorate_friend where (user_from_id = ? or user_to_id = ? or user_from_id = ? or user_to_id = ?) and is_accepted = true";
+        Map<Integer, Integer> users = new HashMap<>();
+        List<User> answer = new ArrayList<>();
+
+        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, userId, otherId, otherId, userId);
+        while (rows.next()) {
+            int friendId = (Integer.parseInt(Objects.requireNonNull(rows.getString("user_from_id"))) == userId ||
+                    Integer.parseInt(Objects.requireNonNull(rows.getString("user_from_id"))) == otherId) ?
+                    Integer.parseInt(Objects.requireNonNull(rows.getString("user_to_id"))) :
+                    Integer.parseInt(Objects.requireNonNull(rows.getString("user_from_id")));
+            users.put(friendId, users.getOrDefault(friendId, 0) + 1);
+        }
+
+        for (Integer key : users.keySet()) {
+            if (users.get(key) == 2) answer.add(userDao.getUserById(key));
+        }
+
+        return answer;
+    }
+
+
 }
