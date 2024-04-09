@@ -7,15 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
 public class User {
     private final int id;
-
-    private final Map<Integer, String> friends = new HashMap<>();
 
     @Email
     private String email;

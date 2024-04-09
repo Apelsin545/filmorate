@@ -2,8 +2,10 @@ package ru.yandex.practikum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practikum.filmorate.dao.FriendDao;
+import ru.yandex.practikum.filmorate.dao.Impl.UserDaoImpl;
+import ru.yandex.practikum.filmorate.dao.UserDao;
 import ru.yandex.practikum.filmorate.model.User;
-import ru.yandex.practikum.filmorate.storage.UserStorage;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,67 +14,44 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private final UserStorage users;
+    private final UserDao userDao;
+    private final FriendDao friendDao;
 
     @Autowired
-    public UserService(UserStorage users) {
-        this.users = users;
+    public UserService(UserDao userDao, FriendDao friendDao) {
+        this.userDao = userDao;
+        this.friendDao = friendDao;
     }
 
-    public boolean addFriend(int userId, int anotherUserId) {
-        if (users.getUsers().get(userId).getFriends().get(anotherUserId) == null && users.getUsers().get(anotherUserId).getFriends().get(userId) == null) {
-            users.getUsers().get(anotherUserId).getFriends().put(userId, "Not confirmed");
-
-            return true;
-        } else if (Objects.equals(users.getUsers().get(userId).getFriends().get(anotherUserId), "Not confirmed")) {
-            users.getUsers().get(userId).getFriends().put(anotherUserId, "Confirmed");
-            users.getUsers().get(anotherUserId).getFriends().put(userId, "Confirmed");
-
-            return true;
-        }
-
-        return false;
+    public User getUserById(int id) {
+        return userDao.getUserById(id);
     }
 
-    public boolean removeFriend(int userId, int anotherUserId) {
-        if (Objects.equals(users.getUsers().get(userId).getFriends().get(anotherUserId), "Not confirmed")) {
-            users.getUsers().get(anotherUserId).getFriends().remove(userId);
-
-            return true;
-        } else if (Objects.equals(users.getUsers().get(userId).getFriends().get(anotherUserId), "Confirmed")) {
-            users.getUsers().get(userId).getFriends().remove(anotherUserId);
-            users.getUsers().get(anotherUserId).getFriends().remove(userId);
-
-            return true;
-        }
-
-        return false;
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
-    public Set<Integer> getCommonFriends(int userId, int anotherUserId) {
-        return users.getUsers()
-                .get(userId)
-                .getFriends()
-                .keySet()
-                .stream()
-                .filter(id -> users.getUsers()
-                        .get(anotherUserId)
-                        .getFriends().containsKey(id) && Objects.equals(users.getUsers()
-                        .get(anotherUserId)
-                        .getFriends().get(id), "Confirmed"))
-                .collect(Collectors.toSet());
+    public void createUser(User user) {
+        userDao.createUser(user);
     }
 
-    public Set<Integer> getFriends(int userId) {
-        return users.getUsers().get(userId).getFriends().keySet();
+    public void removeUser(int userId) {
+        userDao.removeUser(userId);
     }
 
-    public List<User> getUsers() {
-        return users.getUsers().values().stream().toList();
+    public List<User> getFriends(int userId) {
+        return friendDao.getFriends(userId);
     }
 
-    public User createUser(User user) {
-        return users.add(user);
+    public List<User> getCommonFriends(int userId, int otherId) {
+        return friendDao.getCommonFriends(userId, otherId);
     }
 
+    public void addFriend(int userFromId, int userToId) {
+        friendDao.sendRequest(userFromId, userToId);
+    }
+
+    public void deleteFriend(int userFromId, int userToId) {
+        friendDao.rejectRequest(userFromId, userToId);
+    }
 }

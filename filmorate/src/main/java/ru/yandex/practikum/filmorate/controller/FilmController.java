@@ -9,7 +9,9 @@ import ru.yandex.practikum.filmorate.model.Film;
 import ru.yandex.practikum.filmorate.service.FilmService;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -21,9 +23,14 @@ public class FilmController {
         this.filmService = filmService;
     }
 
+    @GetMapping(value = "/films", params = {"id"})
+    public Film getFilmById(@RequestParam int id) {
+        return filmService.getFilmById(id);
+    }
+
     @GetMapping("/films")
-    public List<Film> findAll() {
-        return filmService.findAll();
+    public List<Film> getAllFilms() {
+        return filmService.getAllFilms();
     }
 
     @GetMapping("/films/popular")
@@ -32,31 +39,31 @@ public class FilmController {
     }
 
     @PostMapping("/film")
-    public Film create(@Valid @RequestBody Film film) throws ValidationException {
-        if (!Objects.equals(film.getName(), "") && film.getDescription().length() <= 200
-                && film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28))
-                && !film.getDuration().isNegative()) {
-            if (!filmService.findAll().contains(film)) log.info("Добавлен новый фильм: " + film);
-            else log.info("Изменен существующий фильм: " + film);
+    public void create(@Valid @RequestBody Film film) throws ValidationException {
+        if (!Objects.equals(film.getName(), "") && film.getDescription().length() <= 200 && film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28))) {
+            log.info("Добавлен новый фильм: " + film);
 
             filmService.createFilm(film);
         } else {
-            if (!filmService.findAll().contains(film)) log.info("Ошибка добавления фильма: " + film);
-            else log.info("Ошибка обновления фильма: " + film);
+            log.info("Ошибка добавления фильма: " + film);
 
             throw new ValidationException("неправильное тело запроса");
         }
-        return film;
+    }
+
+    @DeleteMapping("/film")
+    public void delete(@RequestParam int id) {
+        filmService.removeFilm(id);
     }
 
     @PutMapping("/films/{id}/like/{userId}")
     public void addLike(@PathVariable int id, @PathVariable int userId) {
-        filmService.addLike(id, userId);
+        filmService.addLikeToFilm(id, userId);
     }
 
     @DeleteMapping("/films/{id}/like/{userId}")
     public void deleteLike(@PathVariable int id, @PathVariable int userId) {
-        filmService.deleteLike(id, userId);
+        filmService.deleteLikeFromFilm(id, userId);
     }
 
     @ExceptionHandler
